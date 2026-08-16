@@ -1,0 +1,38 @@
+# Dependencies
+node_modules
+.pnpm-store
+
+# Build outputs
+.output
+dist
+build
+
+# Local dev
+.env
+.env.local
+.env.*.local
+*.log
+
+# Git / OS
+.git
+.gitignore
+.DS_Store
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Editor / IDE
+.vscode
+.idea
+
+# Testing
+coverage
+.nyc_output
+
+# Misc
+README.md
+.prettierrc
+.prettierignore
+eslint.config.js
