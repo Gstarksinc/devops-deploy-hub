@@ -7,6 +7,12 @@
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
 export default defineConfig({
+  // Outside Lovable (e.g. Docker / self-hosting) build a standalone Node server
+  // into .output/. Inside Lovable this is ignored (the platform pins its own target).
+  nitro: {
+    preset: "node-server",
+    output: { dir: ".output", serverDir: ".output/server", publicDir: ".output/public" },
+  },
   tanstackStart: {
     // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
     // nitro/vite builds from this

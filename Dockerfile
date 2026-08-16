@@ -3,8 +3,8 @@
 # ============================================
 # VXCTech Landing Page — Production Dockerfile
 # ============================================
-# The project uses Bun (bun.lock) and builds through TanStack Start/Nitro
-# into .output/. Build with Bun, run the server with Node.
+# Bun installs + builds; Nitro emits a standalone Node server into .output/
+# (vite.config.ts pins the `node-server` preset outside Lovable).
 
 # ---------------------------------------------------------------------------
 # Stage 1: Dependencies
@@ -13,9 +13,7 @@ FROM oven/bun:1-alpine AS deps
 
 WORKDIR /app
 
-# Copy package manifests (bunfig.toml matters: it configures the install)
 COPY package.json bun.lock bunfig.toml ./
-
 RUN bun install --frozen-lockfile
 
 # ---------------------------------------------------------------------------
@@ -28,8 +26,7 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Build the TanStack Start app (outputs to .output/)
-RUN bun run build
+RUN bun run build && test -f .output/server/index.mjs
 
 # ---------------------------------------------------------------------------
 # Stage 3: Production Runner
@@ -47,6 +44,6 @@ COPY --from=builder /app/.output ./.output
 EXPOSE 3000
 
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
-  CMD node -e "require('http').get('http://localhost:3000/').on('error', () => process.exit(1))" || exit 1
+  CMD node -e "require('http').get('http://localhost:3000/', r => process.exit(r.statusCode < 500 ? 0 : 1)).on('error', () => process.exit(1))"
 
 CMD ["node", ".output/server/index.mjs"]
