@@ -1,18 +1,19 @@
 services:
-  vxc-tech:
+  vxctech-website:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: vxc-tech-landing
+    image: vxctech-website:latest
+    container_name: vxctech-website
     ports:
-      - "3000:3000"
+      - "8080:8080"
     environment:
-      - NODE_ENV=production
-      - PORT=3000
+      # SSL/TLS is terminated by Nginx or the external load balancer, not here.
+      - CATALINA_OPTS=-Xms128m -Xmx512m
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000/').on('error', () => process.exit(1))"]
+      test: ["CMD", "sh", "-c", "curl -fsS http://localhost:8080/ > /dev/null || exit 1"]
       interval: 30s
       timeout: 5s
       retries: 3
-      start_period: 10s
+      start_period: 30s
