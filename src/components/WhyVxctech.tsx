@@ -6,30 +6,39 @@ const values = [
   {
     icon: Cpu,
     title: "Engineering First",
-    desc: "We approach hosting and deployment as an engineering problem — not simply a server rental.",
+    desc: "We approach infrastructure as an engineering discipline, not simply server provisioning.",
   },
   {
     icon: Zap,
-    title: "Automation",
-    desc: "Reduce manual work through automated builds, deployments and infrastructure processes.",
+    title: "Automation First",
+    desc: "Reduce manual work through repeatable deployment and infrastructure processes.",
   },
   {
     icon: ShieldCheck,
-    title: "Reliability",
-    desc: "Production systems need monitoring, backups, security and predictable deployments.",
+    title: "Production Focused",
+    desc: "Security, monitoring, backups and reliability are part of the infrastructure strategy.",
   },
   {
     icon: TrendingUp,
-    title: "Scalable",
-    desc: "Start small and evolve your infrastructure as your application and customer base grow.",
+    title: "Business Aligned",
+    desc: "Infrastructure should support your product, customers and business growth.",
   },
 ];
 
 export function WhyVxctech() {
   return (
-    <section id="why" className="scroll-mt-24 border-y border-border bg-surface/30 py-24 lg:py-32">
+    <section id="why" className="scroll-mt-24 py-24 lg:py-32">
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
-        <SectionHeading eyebrow="Why VXCTech" title="Why Businesses Choose VXCTech" />
+        <SectionHeading
+          eyebrow="Why VXCTech"
+          title={
+            <>
+              More Than Hosting.
+              <br />
+              <span className="text-gradient">Your Infrastructure Partner.</span>
+            </>
+          }
+        />
         <ul className="mt-14 grid gap-5 md:grid-cols-2">
           {values.map((v, i) => (
             <Reveal as="li" key={v.title} delay={i * 80}>
