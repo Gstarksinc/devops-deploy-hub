@@ -1,49 +1,41 @@
 # syntax=docker/dockerfile:1
 
-# ============================================
-# VXCTech Landing Page — Production Dockerfile
-# ============================================
-# Bun installs + builds; Nitro emits a standalone Node server into .output/
-# (vite.config.ts pins the `node-server` preset outside Lovable).
+# =============================================================================
+# VXCTech — production image
+#   Stage 1 (Node/Bun): install -> build -> package dist/ROOT.war
+#   Stage 2 (Tomcat)  : serve ROOT.war on :8080   (no Node on the runtime host)
+# =============================================================================
 
 # ---------------------------------------------------------------------------
-# Stage 1: Dependencies
+# Stage 1: Build + WAR packaging
 # ---------------------------------------------------------------------------
-FROM oven/bun:1-alpine AS deps
+FROM oven/bun:1-debian AS builder
 
 WORKDIR /app
 
 COPY package.json bun.lock bunfig.toml ./
 RUN bun install --frozen-lockfile
 
-# ---------------------------------------------------------------------------
-# Stage 2: Build
-# ---------------------------------------------------------------------------
-FROM oven/bun:1-alpine AS builder
-
-WORKDIR /app
-
-COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-RUN bun run build && test -f .output/server/index.mjs
+# Produces dist/ROOT.war (static assets + WEB-INF/web.xml SPA fallback)
+RUN bun run package:war && test -f dist/ROOT.war
 
 # ---------------------------------------------------------------------------
-# Stage 3: Production Runner
+# Stage 2: Tomcat runtime
 # ---------------------------------------------------------------------------
-FROM node:20-alpine AS runner
+FROM tomcat:10.1-jre17-temurin
 
-WORKDIR /app
+# Serve the app at the context root
+RUN rm -rf /usr/local/tomcat/webapps/*
 
-ENV NODE_ENV=production
-ENV PORT=3000
-ENV HOST=0.0.0.0
+COPY --from=builder /app/dist/ROOT.war /usr/local/tomcat/webapps/ROOT.war
 
-COPY --from=builder /app/.output ./.output
+ENV CATALINA_OPTS="-Xms128m -Xmx512m"
 
-EXPOSE 3000
+EXPOSE 8080
 
-HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
-  CMD node -e "require('http').get('http://localhost:3000/', r => process.exit(r.statusCode < 500 ? 0 : 1)).on('error', () => process.exit(1))"
+HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=3 \
+  CMD ["sh", "-c", "curl -fsS http://localhost:8080/ > /dev/null || exit 1"]
 
-CMD ["node", ".output/server/index.mjs"]
+CMD ["catalina.sh", "run"]

@@ -3,6 +3,7 @@ import { Hexagon } from "lucide-react";
 const columns = [
   {
     title: "Services",
+    href: "#services",
     links: [
       "DevOps",
       "Website Hosting",
@@ -11,19 +12,25 @@ const columns = [
       "Monitoring",
       "Security",
     ],
-    href: "#services",
   },
   {
     title: "Solutions",
-    links: ["Startups", "SaaS", "Growing Businesses", "Managed Infrastructure"],
     href: "#solutions",
+    links: ["Startups", "Growing Businesses", "SaaS Companies"],
   },
   {
     title: "Company",
+    href: "#about",
     links: ["About", "Contact", "Privacy Policy", "Terms"],
-    href: "#contact",
   },
 ];
+
+const targets: Record<string, string> = {
+  About: "#about",
+  Contact: "#contact",
+  "Privacy Policy": "#contact",
+  Terms: "#contact",
+};
 
 export function Footer() {
   return (
@@ -43,7 +50,7 @@ export function Footer() {
               DevOps • Cloud • Hosting • Infrastructure
             </p>
             <p className="mt-4 max-w-sm text-sm text-muted-foreground">
-              We Deploy. We Host. We Manage. You Build.
+              Deploy, host, monitor and manage production infrastructure with confidence.
             </p>
           </div>
 
@@ -54,7 +61,7 @@ export function Footer() {
                 {col.links.map((l) => (
                   <li key={l}>
                     <a
-                      href={col.href}
+                      href={targets[l] ?? col.href}
                       className="text-sm text-muted-foreground transition-colors hover:text-foreground"
                     >
                       {l}

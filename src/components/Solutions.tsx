@@ -5,49 +5,49 @@ import { SectionHeading } from "./SectionHeading";
 const solutions = [
   {
     title: "Startups",
-    desc: "Launch your product without building an infrastructure team from day one.",
+    desc: "Launch faster without spending your early resources building infrastructure.",
     features: [
-      "Cost-efficient infrastructure",
+      "Application deployment",
+      "Managed hosting",
       "CI/CD",
-      "Application hosting",
       "Monitoring",
-      "Scalable architecture",
+      "Infrastructure consulting",
     ],
-    cta: "Build Your Startup",
+    cta: "For Startups",
   },
   {
     title: "Growing Businesses",
-    desc: "Upgrade from manual deployments and unmanaged servers to professional infrastructure.",
+    desc: "Replace manual deployments and unmanaged servers with professional infrastructure.",
     features: [
-      "Automated deployments",
-      "Cloud migration",
+      "CI/CD automation",
+      "Server management",
       "Load balancing",
       "Monitoring",
-      "Infrastructure management",
+      "Cloud migration",
     ],
-    cta: "Scale Your Infrastructure",
+    cta: "Scale With Us",
     featured: true,
   },
   {
-    title: "SaaS Companies",
-    desc: "Reliable infrastructure for applications that need continuous deployment and scalability.",
+    title: "SaaS & Technology Companies",
+    desc: "Build a reliable foundation for continuously evolving applications.",
     features: [
       "Docker",
       "Kubernetes",
       "CI/CD",
       "High availability",
-      "Observability",
+      "Monitoring",
       "Production management",
     ],
-    cta: "Build Your SaaS",
+    cta: "Build Your Infrastructure",
   },
 ];
 
 export function Solutions() {
   return (
-    <section id="solutions" className="scroll-mt-24 py-24 lg:py-32">
+    <section id="solutions" className="scroll-mt-24 border-y border-border bg-surface/30 py-24 lg:py-32">
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
-        <SectionHeading eyebrow="Solutions" title="Infrastructure for Every Stage of Your Business" />
+        <SectionHeading eyebrow="Solutions" title="Infrastructure That Fits Your Business" />
 
         <ul className="mt-14 grid gap-5 lg:grid-cols-3">
           {solutions.map((s, i) => (
@@ -57,6 +57,11 @@ export function Solutions() {
                   s.featured ? "glow-ring" : ""
                 }`}
               >
+                {s.featured && (
+                  <span className="mb-4 inline-flex w-fit rounded-full border border-primary/40 bg-primary/10 px-3 py-1 font-mono text-[10px] tracking-[0.18em] text-primary uppercase">
+                    Most requested
+                  </span>
+                )}
                 <h3 className="text-xl font-semibold">{s.title}</h3>
                 <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{s.desc}</p>
                 <ul className="mt-6 space-y-2.5">
@@ -69,7 +74,8 @@ export function Solutions() {
                 </ul>
                 <a
                   href="#contact"
-                  className="group mt-8 inline-flex items-center justify-center gap-2 rounded-lg border border-border bg-secondary/50 px-5 py-3 text-sm font-semibold transition-colors hover:bg-secondary"
+                  className="group mt-auto inline-flex items-center justify-center gap-2 rounded-lg border border-border bg-secondary/50 px-5 py-3 pt-3 text-sm font-semibold transition-colors hover:border-primary/40 hover:bg-secondary"
+                  style={{ marginTop: "2rem" }}
                 >
                   {s.cta}
                   <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />

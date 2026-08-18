@@ -9,7 +9,9 @@
     "build:dev": "vite build --mode development",
     "preview": "vite preview",
     "lint": "eslint .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "package:war": "node scripts/package-war.mjs",
+    "clean": "rm -rf .output dist"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

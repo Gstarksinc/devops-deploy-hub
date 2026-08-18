@@ -8,7 +8,6 @@ const links = [
   { label: "Infrastructure", href: "#infrastructure" },
   { label: "Why VXCTech", href: "#why" },
   { label: "About", href: "#about" },
-  { label: "Contact", href: "#contact" },
 ];
 
 export function Navbar() {
@@ -26,15 +25,20 @@ export function Navbar() {
     <header
       className={cn(
         "fixed inset-x-0 top-0 z-50 transition-all duration-300",
-        scrolled ? "glass-panel border-x-0 border-t-0" : "border-b border-transparent",
+        scrolled
+          ? "border-b border-border bg-background/75 backdrop-blur-xl"
+          : "border-b border-transparent",
       )}
     >
       <nav
         aria-label="Main"
-        className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 lg:px-8"
+        className={cn(
+          "mx-auto flex max-w-7xl items-center justify-between px-5 transition-all duration-300 lg:px-8",
+          scrolled ? "py-3" : "py-5",
+        )}
       >
-        <a href="#top" className="flex items-center gap-2.5">
-          <span className="relative grid size-9 place-items-center rounded-lg bg-secondary glow-ring">
+        <a href="#top" className="flex items-center gap-2.5" aria-label="VXCTech home">
+          <span className="grid size-9 place-items-center rounded-lg border border-border bg-secondary">
             <Hexagon className="size-5 text-primary" strokeWidth={2.2} />
           </span>
           <span className="font-display text-lg font-bold tracking-tight">
@@ -58,9 +62,9 @@ export function Navbar() {
         <div className="flex items-center gap-2">
           <a
             href="#contact"
-            className="hidden rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition-all hover:brightness-110 hover:shadow-[0_10px_30px_-10px_var(--primary)] sm:inline-flex"
+            className="hidden rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground transition-all hover:-translate-y-0.5 hover:brightness-110 hover:shadow-[0_12px_30px_-14px_var(--primary)] sm:inline-flex"
           >
-            Get Started
+            Contact Us
           </a>
           <button
             type="button"
@@ -75,8 +79,8 @@ export function Navbar() {
       </nav>
 
       {open && (
-        <div className="glass-panel border-x-0 lg:hidden">
-          <ul className="mx-auto flex max-w-7xl flex-col gap-1 px-5 pb-6 pt-2">
+        <div className="border-b border-border bg-background/95 backdrop-blur-xl lg:hidden">
+          <ul className="mx-auto flex max-w-7xl flex-col gap-1 px-5 pt-2 pb-6">
             {links.map((l) => (
               <li key={l.href}>
                 <a
@@ -94,7 +98,7 @@ export function Navbar() {
                 onClick={() => setOpen(false)}
                 className="mt-2 block rounded-lg bg-primary px-4 py-3 text-center text-sm font-semibold text-primary-foreground"
               >
-                Get Started
+                Contact Us
               </a>
             </li>
           </ul>
